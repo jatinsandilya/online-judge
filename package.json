@@ -1,0 +1,22 @@
+{
+  "name": "empfeed",
+  "version": "0.0.0",
+  "description": "Basic Server",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "ejs": "^2.4.2",
+    "express": "^4.14.0",
+    "mongodb": "^2.2.1",
+    "node-fetch": "^1.5.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.9.2"
+  },
+  "scripts": {
+    "dev": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jatin",
+  "license": "ISC"
+}
