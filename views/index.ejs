@@ -29,24 +29,20 @@
 <script>
 var update = document.getElementById('update');
 
-var fetch = require('node-fetch');
+
 
 update.addEventListener('click',function(){
 
-fetch('quotes', {
-  method: 'put',
-  headers: {'Content-Type': 'application/json'},
-  body: JSON.stringify({
+data =  JSON.stringify({
     'name': 'Darth Vader',
     'quote': 'I find your lack of faith disturbing.'
-  })
-})
-.then(function(res){
-	if(res.ok) return res.json()
-})
-.then(function(data){
-	console.log(data);
-})
+  });
+// FIX THIS
+var request = new XMLHttpRequest();
+request.open('PUT', '/quotes', true);
+request.setRequestHeader('Content-Type', 'application/json;');
+request.send(data);
+
 });
 </script>
-</html>
+w</html>
