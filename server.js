@@ -12,12 +12,6 @@ app.use(express.static('public'));
 
 app.set('view engine','ejs');
 
-// MongoClient.connect('mongodb://jats22:jpg308@ds021289.mlab.com:21289/empfeed',function(err,database){
-// 	if(err) return console.log(err);
-// 	db = database;
-	
-// })
-
 app.get('/',function(req,res){
 	console.log('Get request')
 	
@@ -26,10 +20,7 @@ app.get('/',function(req,res){
 		collection.find().toArray(function(err,quote){
 			res.render('index.ejs',{quotes: quote});
 		})
-	})
-
-
-		
+	})		
 		
 	// });
 })
