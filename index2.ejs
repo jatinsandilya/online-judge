@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>fiddleCPP</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+     <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/codemirror/CodeMirror/master/lib/codemirror.css">
+        <script type="text/javascript" src="https://cdn.rawgit.com/codemirror/CodeMirror/master/lib/codemirror.js"></script>
+        <!-- <script type="text/javascript" src="https://cdn.rawgit.com/codemirror/CodeMirror/master/mode/xml/xml.js"></script> -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.16.0/mode/clike/clike.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.16.0/theme/3024-night.css" type="text/css">
+    <!-- Custom CSS -->
+    <!-- <link href="./startbootstrap-shop-item-1.0.4/css/shop-item.css" rel="stylesheet"> -->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#"></a>
+                    </li>
+                    <li>
+                        <a href="#"></a>
+                    </li>
+                    <li>
+                        <a href="#"></a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container jumbotron">
+
+        <div class="row">
+
+            <div class="col-md-3">
+                <p class="lead"></p>
+                <div class="list-group">
+                    <!-- <a href="#" class="list-group-item active">Code 1</a> -->
+
+                </div>
+                <ul class="codes">
+  <% for(var i=0; i<codes.length; i++) {%>
+    <li>
+      <span><pre><%= codes[i].code %></pre></span>
+      <span><%= codes[i].Title %></span>
+      <hr>
+    </li>
+  <% } %>
+  </ul> 
+            </div>
+
+            <div class="col-md-9">
+
+                <div class="jumbotron">
+
+
+                     
+                        <!-- <input type="text" placeholder="name" name="name"> -->
+                        
+                        <hr>
+                         <form action="/codes" method="POST">
+                         <!-- <li class="code"> -->
+                            <textarea class = "code" id="code" name ="code" type="text" style="">//Write Code here...
+int main(){
+    
+    return 0; 
+}</textarea>
+                            <hr>
+                            <!-- <span></span> -->
+                            <input type="text" placeholder="Title" name="Title" style="width:100%">
+                            <hr>
+                        <!-- <button type="submit">Submit</button> -->
+                            <div class ="text-center">
+                            <button type="submit" id="update">Submit</button>
+                            <!-- <a class="btn btn-success" type="submit" id="update">Save</a> -->
+                            </div>
+                            <hr>
+                            <br>
+                        <!-- </li> -->
+                        </form>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /.container -->
+
+    <div class="container">
+
+        <hr>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <!-- <script src="lib/codemirror.js"></script> -->
+    <!-- <link rel="stylesheet" href="lib/codemirror.css"> -->
+    <!-- <script src="mode/javascript/javascript.js"></script> -->
+    <!-- Bootstrap Core JavaScript -->
+    <script type="text/javascript">
+          var editors = document.getElementsByClassName("code");
+          for(i=0;i<editors.length;i++){
+           var editor = CodeMirror.fromTextArea(editors[i], {
+            lineNumbers: true,
+            mode:  'clike',
+            lineWrapping: true,
+            theme: '3024-night'
+          });
+         }
+var update = document.getElementById('update');
+
+
+var request;
+
+update.addEventListener('click',function(){
+
+data =  JSON.stringify({
+    'name': 'Darth Vader',
+    'quote': 'says Bye'
+  });
+console.log(this);
+// FIX THIS
+// request = new XMLHttpRequest();
+// request.open('POST', 'http://localhost:3000/quotes', true);
+// request.setRequestHeader('Content-Type', 'application/json');
+// request.send(data);
+// request.onreadystatechange = function () {                         // while waiting response from server
+        
+//     if (request.readyState === 4) {                // 4 = Response from server has been completely loaded.
+//         if (request.status == 200 && request.status < 300){ // http status between 200 to 299 are all successful
+//               // alert("success");
+//               window.location.href = 'http://localhost:3000';
+//             }
+//     }
+});
+
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
