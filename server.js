@@ -16,43 +16,44 @@ app.get('/',function(req,res){
 	console.log('Get request')
 	
 	database.connect().then(function(db){
-		var collection = db.collection('quotes');
-		collection.find().toArray(function(err,quote){
-			res.render('index.ejs',{quotes: quote});
+		var collection = db.collection('codes');
+		collection.find().toArray(function(err,code){
+			// res.render('index2.ejs',{codes: code});
+			res.send(code);
+			// res.sendFile(__dirname + 'views/index2.ejs');
 		})
 	})		
 		
 	// });
 })
 
-app.post('/quotes',function(req,res){
+app.post('/codes',function(req,res){
 	
 	console.log("Post request");
 
 	database.connect().then(function(db){
-		db.collection('quotes').insert(req.body,function(err,result){
+		db.collection('codes').insert(req.body,function(err,result){
 			if(err) return res.send(err);
 			res.redirect('/');
 			console.log('Saved to Database');
-
 			database.close(db);
 		})
 	})
 	
 })
 
-app.put('/quotes',function(req,res){
+app.put('/codes',function(req,res){
 	console.log("Put request");
 	database.connect().then(function(db){
-		db.collection('quotes').findOneAndUpdate(
+		db.collection('codes').findOneAndUpdate(
 		{
-			name:'Yoda'
+			Title:req.body.Title
 		},
 		{ 
 			$set:
 			{
-			name: req.body.name,
-			quote: req.body.quote
+			code: req.body.code,
+			Title: req.body.Title
 			}
 		},
 		{
