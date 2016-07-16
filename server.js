@@ -4,11 +4,12 @@ const bodyParser = require('body-parser');
 //var daasUrl = 'mongodb://jats22:jpg308@ds021289.mlab.com:21289/empfeed';
 var database = require('./database');
 const app = express();
+var path = require('path');
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname ,'public')));
 
 app.set('view engine','ejs');
 
@@ -18,11 +19,11 @@ app.get('/',function(req,res){
 	database.connect().then(function(db){
 		var collection = db.collection('codes');
 		collection.find().toArray(function(err,code){
-			// res.render('index2.ejs',{codes: code});
+			// res.render(__dirname+'public'+'/'+'backbonetut.html');
 			res.send(code);
-			// res.sendFile(__dirname + 'views/index2.ejs');
+			// res.sendFile(path.join(__dirname , '/app.html'));
 		})
-	})		
+	});		
 		
 	// });
 })
@@ -34,7 +35,7 @@ app.post('/codes',function(req,res){
 	database.connect().then(function(db){
 		db.collection('codes').insert(req.body,function(err,result){
 			if(err) return res.send(err);
-			res.redirect('/');
+			// res.redirect('/');
 			console.log('Saved to Database');
 			database.close(db);
 		})
@@ -63,8 +64,8 @@ app.put('/codes',function(req,res){
 		function(err,result){
 			if(err) return res.send(err)
 			
-			console.log('invasion!');
-			res.redirect('/');
+			console.log('Updated!');
+			// res.redirect('/');
 			database.close(db);
 		}
 		)
