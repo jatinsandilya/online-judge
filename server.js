@@ -13,7 +13,7 @@ app.use(express.static(path.join(__dirname ,'public')));
 
 app.set('view engine','ejs');
 
-app.get('/',function(req,res){
+app.get('/codes',function(req,res){
 	console.log('Get request')
 	
 	database.connect().then(function(db){
