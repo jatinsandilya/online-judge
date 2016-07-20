@@ -19,6 +19,7 @@ app.get('/codes',function(req,res){
 	database.connect().then(function(db){
 		var collection = db.collection('codes');
 		collection.find().toArray(function(err,code){
+			if(err) return res.send(err);
 			// res.render(__dirname+'public'+'/'+'backbonetut.html');
 			res.send(code);
 			// res.sendFile(path.join(__dirname , '/app.html'));
@@ -35,8 +36,9 @@ app.post('/codes',function(req,res){
 	database.connect().then(function(db){
 		db.collection('codes').insert(req.body,function(err,result){
 			if(err) return res.send(err);
-			// res.redirect('/');
+			res.redirect('/');
 			console.log('Saved to Database');
+			// res.sendStatus(200);
 			database.close(db);
 		})
 	})

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>fiddleCPP</title>
+    <title>fiddleC</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
@@ -28,11 +28,9 @@
     </script>  
     <script type="text/template" id="code-template">
         <div class="view">
-            <form id="editor" action="/codes" method="POST">
                 <textarea class = "code" id="code" name ="code" type="text" style=""><%- code %></textarea>
-            </form>
         </div>
-    </script>  
+    </script>
 <style type="text/css">
   
 </style>   
@@ -55,9 +53,7 @@
     top:0px;
     right:450px;
     width: 100%; 
-
    }
-
     .CodeMirror {
     min-height: 43em;
     }
@@ -135,7 +131,6 @@
       padding-left: 8%;
       padding-top: 3%;
     }
-
     .spinner {
   /*margin: 100px auto;*/
   /*width: 40px;*/
@@ -148,7 +143,6 @@
     top: 50%;
     left: 50%;
 }
-
 .cube1, .cube2 {
   background-color: white;
   width: 15px;
@@ -160,19 +154,16 @@
   -webkit-animation: sk-cubemove 1.8s infinite ease-in-out;
   animation: sk-cubemove 1.8s infinite ease-in-out;
 }
-
 .cube2 {
   -webkit-animation-delay: -0.9s;
   animation-delay: -0.9s;
 }
-
 @-webkit-keyframes sk-cubemove {
   25% { -webkit-transform: translateX(42px) rotate(-90deg) scale(0.5) }
   50% { -webkit-transform: translateX(42px) translateY(42px) rotate(-180deg) }
   75% { -webkit-transform: translateX(0px) translateY(42px) rotate(-270deg) scale(0.5) }
   100% { -webkit-transform: rotate(-360deg) }
 }
-
 @keyframes sk-cubemove {
   25% { 
     transform: translateX(42px) rotate(-90deg) scale(0.5);
@@ -192,11 +183,8 @@
   }
 }
     </style>
-
 </head>
-
 <body>
-
     <!-- Navigation -->
 <div class="overlay">
 </div>
@@ -204,51 +192,48 @@
     <div class="cube1"></div>
     <div class="cube2"></div>
   </div>
-
     <!-- Page Content -->
+    <form class="editor" action="/codes" method="POST">
     <div class="container" style="">
-
         <div class="row" style="">
-
             <div class="col-md-3" style="">
-                <p class="lead"></p>
+                <h2 onclick="window.location.href="/" " class="" style="font:'Ubuntu medium';color: #8F938F;text-align:center;font-weight:bold;">fiddleC</h2>
+                <hr>
                 <div style="z-index:40000;">
                     <br>
                      <ul id="codes-list">
                             
                     </ul> 
-
                 </div>
                
             </div>
-
+            
             <div class="col-md-6">
                             <div class="options">
                             <a href="#" title="Save snippet!" class = "save " onclick=" validateForm();"><span class="glyphicon glyphicon-save"></span></a>
                             </div>
+            
                 <div class ="codearea" >      
                         
                 </div>
-
             </div>
-            <div class ="col-md-3 waste text-center">
+            <div class ="col-md-3 waste text-center" class="tit">
             <br>
-            <input type="text" placeholder="Enter a title for the code... " class = "form-control" name="Title" style="" required="">
-            <br>
-            <br>
+            <input type="text" placeholder="Enter a title for the code... " class = "form-control" name="Title" id="title" style="" required="">
             <br>
             <br>
-              <a class="btn btn-social-icon btn-github" style="z-index:30000;" href="https://github.com" title="Fork me!">
+            <br>
+            <br>
+              <a class="btn btn-social-icon btn-github" style="z-index:30000;" href="https://github.com/jats22/fiddle-C" title="Fork me!">
                 <span class="fa fa-github fa-5x row" style="font-size:10em;"></span>
               </a>
             </div>
-
+            
         </div>
-
     </div>
+    </form>
      <!-- </form> -->
     <!-- <div class="container"> -->
-
     <!-- </div> -->
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js" type="text/javascript"></script>
@@ -267,14 +252,13 @@
             viewportMargin: Infinity
           });
          }};
-
         var validateForm = function(){
-            var formmm = document.getElementById('editor');
-            if(formmm["Title"].value == null || formmm["Title"].value == "") {
+            var formTit = $('#title').val();
+            if(formTit == null || formTit == "") {
                 window.alert("Title is a must!");
             }
               else{
-                formmm.submit();
+                $('.editor').submit();
            } 
         }
     </script>
@@ -293,12 +277,9 @@
       $loading.hide();
       $('.overlay').hide();
     });
-
     var select  = 0;
     $(function(){
            
-
-
            $.ajax({
             url:'http://localhost:3000/codes',
             data : {
@@ -306,9 +287,14 @@
             },
             error:function(){
                 window.alert("Couldnt get data!");
+                var Codetemplate = _.template($('#code-template').html());
+                    Codetemplate = Codetemplate({code :"//Write Code Here..."});
+                    $('.codearea').empty().append(Codetemplate);
+                CMInit();
             },
             success:function(data){
                 SnipModel =  data;
+                if(SnipModel.length){
                 for(var i=0;i<SnipModel.length;i++){
                   var compTemplate = _.template($('#title-template').html());
                   var renTemp = compTemplate({ id : i , snip : SnipModel[i] });
@@ -316,7 +302,6 @@
                   $('#codes-list').append(elem);
                 };
                 $('#codes-list').on('click','span',function(){
-                    // window.alert("works!");
                     $('#codes-list').find('span').removeClass('selected');
                     
                     var elem = $(this);
@@ -326,23 +311,27 @@
                     var id = elem.attr('id');
                     var Codetemplate = _.template($('#code-template').html());
                     Codetemplate = Codetemplate(SnipModel[id]);
+                    $('#title').val($('#'+id).text())
                     $('.codearea').empty().append(Codetemplate);
                     CMInit();
-
                 });
                
                 $('#0').click();
+              }
+              else{
+                // Write this.
+                var Codetemplate = _.template($('#code-template').html());
+                Codetemplate = Codetemplate({code :"//Write Code Here..."});
+                $('.codearea').empty().append(Codetemplate);
+                CMInit();
+              }
             },
             type: 'GET'
            });
     });
-
         
         // console.log(view.render().el);
-
     </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
 </body>
-
 </html>
