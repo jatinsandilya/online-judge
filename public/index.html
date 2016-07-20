@@ -17,7 +17,7 @@
      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
         <script type="text/javascript" src="https://cdn.rawgit.com/codemirror/CodeMirror/master/lib/codemirror.js"></script>
         <!-- <script type="text/javascript" src="https://cdn.rawgit.com/codemirror/CodeMirror/master/mode/xml/xml.js"></script> -->
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.16.0/mode/javascript/javascript.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/mode/clike/clike.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.16.0/theme/pastel-on-dark.css" type="text/css">
     
     <script type="text/template" id="title-template">
@@ -245,7 +245,7 @@
           for(i=0;i<editors.length;i++){
            var editor = CodeMirror.fromTextArea(editors[i], {
             lineNumbers: true,
-            mode:  'javascript',
+            mode:  'clike',
             lineWrapping: true,
             theme: 'pastel-on-dark',
             lineNumbers: true,
