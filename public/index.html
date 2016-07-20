@@ -286,7 +286,7 @@
                 format : 'json'
             },
             error:function(){
-                window.alert("Couldnt get data!");
+                // window.alert("Couldnt get data!");
                 var Codetemplate = _.template($('#code-template').html());
                     Codetemplate = Codetemplate({code :"//Write Code Here..."});
                     $('.codearea').empty().append(Codetemplate);
