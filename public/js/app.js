@@ -5,9 +5,44 @@
             }
               else{
                 $('.editor').submit();
+
            } 
         };
-        
+    var compileCode = function(){
+        $.ajax({
+            url:'/compile',
+            data : {
+                format : 'json'
+            },
+            error:function(){
+              
+            },
+            success:function(dat){
+                alert( JSON.parse(dat) );
+            },
+            data : {"code": $('#code').val(),"Cid": cId },
+            type: 'POST'
+        });
+
+    };
+    var runCode = function(){
+        $.ajax({
+            url:'/run',
+            data : {
+                format : 'json'
+            },
+            error:function(){
+              
+            },
+            success:function(dat){
+                alert( JSON.parse(dat) );
+            },
+            data : {"code": $('#code').val(),"Cid": cId },
+            type: 'POST'
+        });
+
+    }
+
     var app = {
       CMInit : function(){
           var editors = document.getElementsByClassName("code");
@@ -25,7 +60,8 @@
        }
     };
     var SnipModel; 
-    
+    var cId;
+
     var $loading = $('#spinner').hide();
     $(document)
     .ajaxStart(function(){
@@ -50,7 +86,9 @@
                 app.CMInit();
             },
             success:function(data){
-                SnipModel =  data;
+                SnipModel =  data.code;
+                cId = data.CID;
+
                 if(SnipModel.length){
                 for(var i=0;i<SnipModel.length;i++){
                   var compTemplate = _.template($('#title-template').html());
@@ -65,15 +103,19 @@
                     
                     elem.addClass('selected');
                     
-                    var id = elem.attr('id');
+                    cId = elem.attr('id');
                     var Codetemplate = _.template($('#code-template').html());
-                    Codetemplate = Codetemplate(SnipModel[id]);
-                    $('#title').val($('#'+id).text())
+                    Codetemplate = Codetemplate(SnipModel[cId]);
+                    $('#title').val($('#'+cId).text())
                     $('.codearea').empty().append(Codetemplate);
                     app.CMInit();
                 });
                
-                $('#0').click();
+                if(cId){
+                  $('#'+cId ).click();
+                }
+                else
+                  $('#0').click();
               }
               else{
                 // Write this.
