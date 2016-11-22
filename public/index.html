@@ -3,35 +3,49 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
 
-    <title>fiddleC</title>
+<title>ICE-CPC</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-     <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/codemirror/CodeMirror/master/lib/codemirror.css">
-     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/mode/clike/clike.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.16.0/theme/pastel-on-dark.css" type="text/css">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/codemirror/CodeMirror/master/lib/codemirror.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/mode/clike/clike.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.16.0/theme/pastel-on-dark.css" type="text/css">
     
-    <script type="text/template" id="title-template">
-        <div class="view" >
-                <span class="not-selected row" id="<%= id %>" "> <%- snip.Title %> </span>
-                <br>
-        </div>
-    </script>  
-    <script type="text/template" id="code-template">
-        <div class="view">
-                <textarea class = "code " id="code" name ="code" type="text" style=""><%- code %></textarea>
-        </div>
-    </script>
+<script type="text/template" id="title-template">
+    <div class="view" >
+            <span class="not-selected row" id="<%= id %>" style="cursor:pointer;"> <%- problem.Title %> </span>
+            <br>
+    </div>
+</script>  
+
+<!-- <script type="text/template" id="code-template">
+    <div class="view">
+            <textarea class = "code " id="code" name ="code" type="text" style=""><%- code %></textarea>
+    </div>
+</script> -->
+
+<script type="text/template" id="heading-template">
+    <div class="view">
+        <h3 style="font:'Ubuntu medium';color: white;text-align:left;font-weight:bold;padding-left:2em ;" class="selected"> <%- problem.Title %> </h3>
+    </div>
+</script>
+
+<script type="text/template" id="description-template">
+    <div class="view">
+         <div class="" style="font:'Ubuntu medium';color: #8F938F;text-align:left;font-weight:bold;padding-left:2em ;"> <%= problem.Desc %></div>
+    </div>
+</script>
+
 <link rel="stylesheet" type="text/css" href="css/style.css">  
 </head>
+
 <body>
     <!-- Navigation -->
 <div class="overlay">
@@ -45,11 +59,11 @@
     <div class="container" style="">
         <div class="row" style="">
             <div class="col-md-3" style="">
-                <h2 onclick="window.location.href="/" " class="" style="font:'Ubuntu medium';color: #8F938F;text-align:center;font-weight:bold;">fiddleC</h2>
+                <h2 onclick="window.location.href="/" " class="" style="font:'Ubuntu medium';color: #8F938F;text-align:center;font-weight:bold;">ICE-CPC</h2>
                 <hr>
                 <div style="z-index:40000;">
                     <br>
-                     <ul id="codes-list">
+                     <ul id="problem-list">
                             
                     </ul> 
                 </div>
@@ -58,30 +72,31 @@
             <div class="col-md-6">
                 <!-- //<br> -->
                 <div class="">
-                    <h3 style="font:'Ubuntu medium';color: #8F938F;text-align:left;font-weight:bold;padding-left:2em ;" class="selected">Problem A </h3>
+                    <div id="heading">
+                        
+                    </div>
                     <br>
                     <br>
-                    <article class="" style="font:'Ubuntu medium';color: #8F938F;text-align:left;font-weight:bold;padding-left:2em ;">
-                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam blandit nisl lectus. Suspendisse mattis congue elit, sed pharetra neque dapibus sit amet. Curabitur eleifend sollicitudin felis, ut vulputate quam. In interdum scelerisque erat eget cursus. Curabitur cursus sapien vestibulum lectus commodo, ut placerat turpis iaculis. In pulvinar libero nec dui vestibulum placerat et volutpat mi. Quisque venenatis nisl eu ligula suscipit aliquam. Duis vestibulum velit sed velit interdum, sit amet gravida justo accumsan. Maecenas consectetur, turpis id convallis lobortis, dui nunc placerat sapien, laoreet viverra nibh odio a purus. Nulla vulputate ipsum in dignissim porta. Aenean scelerisque sagittis dolor. Pellentesque ex justo, aliquet sed elementum et, ultrices eu sem. Donec finibus orci eget sem congue lobortis. Aenean sit amet ultrices odio. Interdum et malesuada fames ac ante ipsum primis in faucibus. Mauris aliquam suscipit dapibus.
-
-Nulla cursus vestibulum fringilla. Suspendisse scelerisque sagittis est, at eleifend neque egestas id. Aenean odio metus, viverra id iaculis sed, imperdiet in metus. Nullam blandit ac nibh ut dapibus. Cras nec semper velit. Sed orci libero, efficitur non viverra et, laoreet sit amet eros. Aliquam erat volutpat. Suspendisse bibendum ornare tellus a tempus. Sed a eros eget ante laoreet tristique. Pellentesque at massa ac arcu mattis malesuada eu id nunc. Proin a blandit neque. Proin lobortis neque mi, nec hendrerit mauris dapibus sed. Sed et metus elementum, cursus orci id, eleifend orci. Vestibulum sagittis ornare blandit. 
-                    </article>
+                <div id="description">
+                     
+                </div>
+                
                 <br>
                 <hr style="color:gray;">
                 </div>
                             <div class="options">
-                            <a href="#" title="Save snippet!" class = "save " onclick=" validateForm();"><span class="glyphicon glyphicon-save"></span></a>
+                            <a href="#" title="Save snippet!" class = "save " onclick=" saveCode();"><span class="glyphicon glyphicon-save"></span></a>
                             <a href="#" title="Compile Code" class = "save " onclick=" compileCode();"><span class="glyphicon glyphicon-refresh"></span></a>
                             <a href="#" title="Run Code" class = "save " onclick=" runCode();"><span class="glyphicon glyphicon-play"></span></a>
                             </div>
                 
-                <div class ="codearea row" style="padding-left:0.6em;">      
-                        
+                <div class="row" style="padding-left:0.6em;">      
+                        <textarea class = "code " id="code" name ="code" type="text" style=""></textarea>
                 </div>
             </div>
             <div class ="col-md-3 waste text-center" class="tit">
             <br>
-            <input type="text" placeholder="Enter a title for the code... " class = "form-control" name="Title" id="title" style="" required="">
+            <input type="text" placeholder="Enter your Roll number. " class = "form-control" name="Title" id="title" style="" required="">
             <br>
             <br>
             <br>

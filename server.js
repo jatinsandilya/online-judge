@@ -1,6 +1,4 @@
 const express = require('express');
-var session = require('express-session');
-
 const bodyParser = require('body-parser');
 var hackerEarth = require('hackerearth-node');
 
@@ -25,19 +23,18 @@ var sess;
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
-app.use(session({secret: 'ssshhhhh'}));
-
 app.use(express.static(path.join(__dirname ,'public')));
 
 app.set('view engine','ejs');
 
-app.get('/codes',function(req,res){
+app.get('/problems',function(req,res){
 	console.log('Get request')
 	database.connect().then(function(db){
-		var collection = db.collection('codes');
-		collection.find().toArray(function(err,code){
+		var collection = db.collection('problems');
+		collection.find().toArray(function(err,problems){
 			if(err) return res.send(err);
-				res.send({"code":code});
+
+				res.send(problems);
 		})
 	});		
 })
@@ -45,13 +42,13 @@ app.get('/codes',function(req,res){
 app.post('/compile',function(req,res){
 	
 	console.log('Compile request')
-	config.source = req.body.code;  //your source code for which you want to use hackerEarth api
+	config.source = req.body.code;  //Source code for which you want to use hackerEarth api
 	hackerEarth.compile(config,function(err,resp){
 		if(err){
 			console.log("ERROR: Could not connect with Hackerearth!");
 		}
 		else{
-			var compMessage = resp;
+			var compMessage = JSON.parse(resp).message;
 			console.log(compMessage);
 			res.send(compMessage);
 		}
@@ -61,20 +58,27 @@ app.post('/compile',function(req,res){
 })
 app.post('/run',function(req,res){
 	
-	console.log('Run request')
-	config.source = req.body.code;  //your source code for which you want to use hackerEarth api
-	hackerEarth.run(config,function(err,resp){
-		if(err){
-			console.log("ERROR: Could not connect with Hackerearth!");
-		}
-		else{
-			var runMessage = resp;
-			console.log(runMessage);
-			res.send(runMessage);
-		}
-	});	
-		
-	// });
+	console.log('Run request');
+	config.source = req.body.code;  //Source code for which you want to use hackerEarth api
+
+	database.connect().then(function(db){
+		db.collection('testcases').findOne({"Cid":req.body.Cid},function(err,doc){
+			config.input = doc.Input ;
+			hackerEarth.run(config,function(err,resp){
+				if(err){
+					console.log("ERROR: Could not connect with Hackerearth!");
+				}
+				else{
+					var runMessage = resp;
+					var codeOutput = doc.Output;
+					console.log(req.body.Cid);
+					console.log(JSON.parse(runMessage).run_status.output == codeOutput );
+					res.send(JSON.parse(runMessage).run_status.output == codeOutput );
+				}
+			});	
+			db.close();
+		});
+	});
 })
 
 app.post('/codes',function(req,res){
@@ -84,9 +88,8 @@ app.post('/codes',function(req,res){
 	database.connect().then(function(db){
 		db.collection('codes').insert(req.body,function(err,result){
 			if(err) return res.send(err);
-			res.redirect('/');
+			res.sendStatus(200);
 			console.log('Saved to Database');
-			// res.sendStatus(200);
 			database.close(db);
 		})
 	})
@@ -124,7 +127,7 @@ app.put('/codes',function(req,res){
 	
 })
 
-app.listen(3000,function(){
+app.listen(80,function(){
 		console.log("Listening on 3000");
 		//console.log(hackerEarth);
 })

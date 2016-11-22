@@ -1,13 +1,4 @@
-    var validateForm = function(){
-            var formTit = $('#title').val();
-            if(formTit == null || formTit == "") {
-                window.alert("Title is a must!");
-            }
-              else{
-                $('.editor').submit();
 
-           } 
-        };
     var compileCode = function(){
         $.ajax({
             url:'/compile',
@@ -18,12 +9,42 @@
               
             },
             success:function(dat){
-                alert( JSON.parse(dat) );
+                // alert(dat);
+                if(JSON.parse(dat)["compile_status"] =="OK"){
+                  alert("Compilation Successful!");
+                }
+                else{
+                  alert(JSON.parse(dat)["compile_status"]);
+                } 
+                // alert( JSON.parse(dat) );// More functionality here
             },
-            data : {"code": $('#code').val(),"Cid": cId },
+            data : {"code": Editor.getValue(),"Cid": cId },
             type: 'POST'
         });
 
+    };
+    var saveCode = function(){
+        var formTit = $('#title').val();
+        if(formTit == null || formTit == "") {
+          window.alert("Roll number  is a must!");
+        }
+        else{
+
+        $.ajax({
+            url:'/codes',
+            data : {
+                format : 'json'
+            },
+            error:function(){
+              
+            },
+            success:function(dat){
+                console.log(dat);
+            },
+            data : {"code": Editor.getValue(),"Cid": cId ,"user_id":$('#title').val()},
+            type: 'POST'
+        });
+      }
     };
     var runCode = function(){
         $.ajax({
@@ -35,19 +56,24 @@
               
             },
             success:function(dat){
-                alert( JSON.parse(dat) );
+                if(dat==true){
+                  alert("Submission for Problem "+(Number(cId)+1)+" accepted!");
+                }
+                else{
+                  alert("Wrong answer!");
+                } 
             },
-            data : {"code": $('#code').val(),"Cid": cId },
+            data : {"code": Editor.getValue(),"Cid": cId },
             type: 'POST'
         });
 
     }
+    var Editor;
 
     var app = {
       CMInit : function(){
-          var editors = document.getElementsByClassName("code");
-          for(i=0;i<editors.length;i++){
-           var editor = CodeMirror.fromTextArea(editors[i], {
+          var dit = document.getElementById("code");
+          Editor = CodeMirror.fromTextArea(dit, {
             lineNumbers: true,
             mode:  'clike',
             lineWrapping: true,
@@ -56,12 +82,12 @@
             viewportMargin: Infinity,
             showCursorWhenSelecting: true
           });
-         }
        }
     };
-    var SnipModel; 
-    var cId;
+    var ProblemModel; 
+    var codeModel = [];
 
+    var cId = 0;
     var $loading = $('#spinner').hide();
     $(document)
     .ajaxStart(function(){
@@ -72,10 +98,12 @@
       $loading.hide();
       $('.overlay').hide();
     });
+    
+
     $(function(){
            
            $.ajax({
-            url:'/codes',
+            url:'/problems',
             data : {
                 format : 'json'
             },
@@ -86,36 +114,78 @@
                 app.CMInit();
             },
             success:function(data){
-                SnipModel =  data.code;
-                cId = data.CID;
+                
+                ProblemModel =  data;
+                
+                app.CMInit();
+                cId = 0 ;
 
-                if(SnipModel.length){
-                for(var i=0;i<SnipModel.length;i++){
+                if(ProblemModel.length){
+                
+                for(var i=0;i<ProblemModel.length;i++){
+                  
                   var compTemplate = _.template($('#title-template').html());
-                  var renTemp = compTemplate({ id : i , snip : SnipModel[i] });
+                  
+                  var renTemp = compTemplate({ id : i , problem : ProblemModel[i] });
+                  
                   var elem = $(renTemp);
-                  $('#codes-list').append(elem);
+
+                  var headCTemplate = _.template($('#heading-template').html());
+
+                  var renHeadTemplate = headCTemplate({problem : ProblemModel[i]}); 
+
+                  var descTemplate = _.template($('#description-template').html());
+                  
+                  descTemplate = descTemplate({problem: ProblemModel[i]});
+
+                  $('#description').empty().append(descTemplate);
+                  
+                  $('#heading').empty().append($(renHeadTemplate));
+
+                  $('#problem-list').append(elem);
+
                 };
-                $('#codes-list').on('click','span',function(){
-                    $('#codes-list').find('span').removeClass('selected');
+
+                // -----------WORK ON THIS!!!-----------------------
+                
+                $('#problem-list').on('click','span',function(){
+
+                    // Handling code
+
+        //            if(Editor)
+                    codeModel[cId] = Editor.getValue();
+
+                    $('#problem-list').find('span').removeClass('selected');
                     
                     var elem = $(this);
                     
                     elem.addClass('selected');
                     
                     cId = elem.attr('id');
-                    var Codetemplate = _.template($('#code-template').html());
-                    Codetemplate = Codetemplate(SnipModel[cId]);
-                    $('#title').val($('#'+cId).text())
-                    $('.codearea').empty().append(Codetemplate);
-                    app.CMInit();
+
+                    var headTemplate = _.template($('#heading-template').html());
+                    headTemplate = headTemplate({problem : ProblemModel[cId]});
+
+                      var descTemplate = _.template($('#description-template').html());
+                    descTemplate = descTemplate({problem: ProblemModel[cId]});
+
+
+                    $('#description').empty().append(descTemplate);
+                    $('#heading').empty().append($(headTemplate));
+                    
+                    //var Codetemplate = _.template($('#code-template').html());
+                    if(codeModel[cId])
+                        Editor.getDoc().setValue(codeModel[cId]);
+                    else
+                        Editor.getDoc().setValue("//Write Code Here...");
+                    
+                    //$('.codearea').empty().append(Codetemplate);
+                    //app.CMInit();
                 });
-               
-                if(cId){
-                  $('#'+cId ).click();
-                }
-                else
-                  $('#0').click();
+
+                // Initialisation
+               $('#0').click();
+                   //app.CMInit();
               }
               else{
                 // Write this.
