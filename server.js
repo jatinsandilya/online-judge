@@ -48,7 +48,7 @@ app.post('/compile',function(req,res){
 			console.log("ERROR: Could not connect with Hackerearth!");
 		}
 		else{
-			var compMessage = JSON.parse(resp).message;
+			var compMessage = resp;
 			console.log(compMessage);
 			res.send(compMessage);
 		}

@@ -10,13 +10,12 @@
             },
             success:function(dat){
                 // alert(dat);
-                if(JSON.parse(dat)["compile_status"] =="OK"){
+                if(JSON.parse(dat).compile_status =="OK"){
                   alert("Compilation Successful!");
                 }
                 else{
-                  alert(JSON.parse(dat)["compile_status"]);
+                  alert(JSON.parse(dat).compile_status);
                 } 
-                // alert( JSON.parse(dat) );// More functionality here
             },
             data : {"code": Editor.getValue(),"Cid": cId },
             type: 'POST'
@@ -79,7 +78,8 @@
             lineWrapping: true,
             theme: 'pastel-on-dark',
             lineNumbers: true,
-            viewportMargin: Infinity,
+            // height: auto,
+            // viewportMargin: Infinity,
             showCursorWhenSelecting: true
           });
        }

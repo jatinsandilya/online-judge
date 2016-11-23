@@ -19,13 +19,14 @@
    }
     .CodeMirror {
     min-height: 43em;
+    width:97%;
     }
     .row{
         height: 100%;
         margin-left:-15px;
     }
     .col-md-3{
-        width: 12%;
+        width: 10%;
         height: 100%;
         overflow-y: auto;
         background-color: #34302f;
@@ -44,7 +45,7 @@
       border-left: thin solid white;
     }
     .col-md-6 {
-      width:73%;
+      width:90%;
       border-left: 1px solid black;
       border-right: 1px solid black;
       border-bottom: thin solid #5c5855;
